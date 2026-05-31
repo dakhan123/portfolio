@@ -1,1368 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danish Asad Khan — Portfolio</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0f;
-            --surface: #111118;
-            --surface2: #1a1a24;
-            --border: #2a2a38;
-            --accent: #6ee7b7;
-            --accent2: #818cf8;
-            --accent3: #f472b6;
-            --text: #e8e8f0;
-            --muted: #7070a0;
-            --glow: rgba(110, 231, 183, 0.15);
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-            cursor: none;
-        }
-
-        /* Custom cursor */
-        .cursor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 12px;
-            height: 12px;
-            background: var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background 0.2s;
-            mix-blend-mode: difference;
-        }
-
-        .cursor-ring {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 36px;
-            height: 36px;
-            border: 1px solid var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease, width 0.3s, height 0.3s;
-            opacity: 0.5;
-        }
-
-        /* Noise overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='https://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.4;
-        }
-
-        /* Nav */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 1.25rem 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 100;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.3s, background 0.3s;
-        }
-
-        nav.scrolled {
-            background: rgba(10, 10, 15, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom-color: var(--border);
-        }
-
-        .nav-logo {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 1.1rem;
-            letter-spacing: -0.02em;
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--muted);
-            text-decoration: none;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Hero */
-        #hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 8rem 3rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 60% 50% at 70% 50%, rgba(110, 231, 183, 0.07) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 60% at 10% 80%, rgba(129, 140, 248, 0.06) 0%, transparent 60%);
-        }
-
-        .hero-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 60px 60px;
-            opacity: 0.2;
-            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-        }
-
-        .hero-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.72rem;
-            color: var(--accent);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            opacity: 0;
-            animation: fadeUp 0.8s 0.2s forwards;
-        }
-
-        .hero-tag::before {
-            content: '';
-            width: 32px;
-            height: 1px;
-            background: var(--accent);
-        }
-
-        h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(3.5rem, 8vw, 7rem);
-            font-weight: 800;
-            line-height: 0.95;
-            letter-spacing: -0.04em;
-            margin-bottom: 1.5rem;
-            opacity: 0;
-            animation: fadeUp 0.8s 0.4s forwards;
-        }
-
-        h1 span {
-            color: var(--accent);
-        }
-
-        .hero-sub {
-            font-size: 1.1rem;
-            color: var(--muted);
-            max-width: 520px;
-            line-height: 1.7;
-            margin-bottom: 3rem;
-            opacity: 0;
-            animation: fadeUp 0.8s 0.6s forwards;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeUp 0.8s 0.8s forwards;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.75rem;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.75rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.2s;
-            cursor: none;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #0a0a0f;
-            font-weight: bold;
-        }
-
-        .btn-primary:hover {
-            background: #fff;
-            box-shadow: 0 0 30px var(--glow);
-        }
-
-        .btn-ghost {
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        .btn-ghost:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .hero-stats {
-            position: absolute;
-            right: 3rem;
-            bottom: 3rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            opacity: 0;
-            animation: fadeUp 0.8s 1s forwards;
-        }
-
-        .stat {
-            text-align: right;
-        }
-
-        .stat-num {
-            font-family: 'Syne', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--accent);
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        /* Section base */
-        section {
-            padding: 7rem 3rem;
-            position: relative;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 4rem;
-        }
-
-        .section-num {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--accent);
-            letter-spacing: 0.1em;
-        }
-
-        .section-line {
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-
-        h2 {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(1.8rem, 3vw, 2.8rem);
-            font-weight: 700;
-            letter-spacing: -0.03em;
-        }
-
-        /* About */
-        #about {
-            background: var(--surface);
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5rem;
-            align-items: start;
-        }
-
-        .about-text p {
-            color: var(--muted);
-            line-height: 1.8;
-            font-size: 1rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .about-text p strong {
-            color: var(--text);
-        }
-
-        .contact-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-top: 2rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--muted);
-        }
-
-        .contact-item .label {
-            color: var(--accent);
-            min-width: 80px;
-            font-size: 0.65rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .contact-item a {
-            color: var(--muted);
-            text-decoration: none;
-        }
-
-        .contact-item a:hover {
-            color: var(--accent);
-        }
-
-        .skills-cloud {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-        }
-
-        .skill-tag {
-            padding: 0.45rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 2px;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--muted);
-            letter-spacing: 0.05em;
-            transition: all 0.2s;
-            cursor: none;
-        }
-
-        .skill-tag:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: var(--glow);
-        }
-
-        .skill-tag.highlight {
-            border-color: rgba(110, 231, 183, 0.4);
-            color: var(--accent);
-            background: rgba(110, 231, 183, 0.05);
-        }
-
-        /* Education */
-        #education {}
-
-        .edu-timeline {
-            position: relative;
-        }
-
-        .edu-timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
-        }
-
-        .edu-item {
-            padding: 0 0 3rem 2.5rem;
-            position: relative;
-        }
-
-        .edu-item::before {
-            content: '';
-            position: absolute;
-            left: -4px;
-            top: 6px;
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
-        }
-
-        .edu-year {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--accent);
-            letter-spacing: 0.1em;
-            margin-bottom: 0.4rem;
-        }
-
-        .edu-degree {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .edu-school {
-            font-size: 0.9rem;
-            color: var(--muted);
-            margin-bottom: 0.5rem;
-        }
-
-        .edu-grade {
-            display: inline-block;
-            padding: 0.2rem 0.75rem;
-            background: rgba(110, 231, 183, 0.08);
-            border: 1px solid rgba(110, 231, 183, 0.2);
-            border-radius: 2px;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--accent);
-        }
-
-        /* Projects */
-        #projects {
-            background: var(--surface);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .project-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.75rem;
-            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-            cursor: none;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s;
-        }
-
-        .project-card:hover {
-            border-color: rgba(110, 231, 183, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .project-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .project-year {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
-            margin-bottom: 0.75rem;
-        }
-
-        .project-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            line-height: 1.3;
-        }
-
-        .project-desc {
-            font-size: 0.85rem;
-            color: var(--muted);
-            line-height: 1.7;
-        }
-
-        .project-badge {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            padding: 0.2rem 0.6rem;
-            background: rgba(129, 140, 248, 0.1);
-            border: 1px solid rgba(129, 140, 248, 0.3);
-            border-radius: 2px;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--accent2);
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        /* Publication */
-        #publication {}
-
-        .pub-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 2.5rem;
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 2rem;
-            align-items: start;
-            transition: border-color 0.3s;
-            max-width: 860px;
-        }
-
-        .pub-card:hover {
-            border-color: rgba(110, 231, 183, 0.3);
-        }
-
-        .pub-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(110, 231, 183, 0.1);
-            border: 1px solid rgba(110, 231, 183, 0.2);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            flex-shrink: 0;
-        }
-
-        .pub-conf {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--accent);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-        }
-
-        .pub-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-        }
-
-        .pub-meta {
-            font-size: 0.85rem;
-            color: var(--muted);
-            margin-bottom: 0.75rem;
-        }
-
-        .pub-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--accent2);
-            text-decoration: none;
-            letter-spacing: 0.05em;
-        }
-
-        .pub-link:hover {
-            color: var(--accent);
-        }
-
-        /* Internships */
-        #internships {
-            background: var(--surface);
-        }
-
-        .intern-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            max-width: 760px;
-        }
-
-        .intern-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem 2rem;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 1rem;
-            align-items: center;
-            transition: border-color 0.3s;
-        }
-
-        .intern-card:hover {
-            border-color: rgba(110, 231, 183, 0.3);
-        }
-
-        .intern-org {
-            font-family: 'Syne', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .intern-topic {
-            font-size: 0.85rem;
-            color: var(--muted);
-        }
-
-        .intern-date {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.68rem;
-            color: var(--accent);
-            text-align: right;
-            white-space: nowrap;
-        }
-
-        /* Achievements */
-        #achievements {}
-
-        .achieve-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1rem;
-        }
-
-        .achieve-item {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            transition: border-color 0.3s, transform 0.2s;
-            cursor: none;
-        }
-
-        .achieve-item:hover {
-            border-color: rgba(244, 114, 182, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .achieve-icon {
-            font-size: 1.3rem;
-            flex-shrink: 0;
-            margin-top: 0.1rem;
-        }
-
-        .achieve-text {
-            font-size: 0.88rem;
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
-        .achieve-text strong {
-            color: var(--text);
-        }
-
-        /* Certifications */
-        #certifications {
-            background: var(--surface);
-        }
-
-        .cert-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.25rem;
-        }
-
-        .cert-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.75rem;
-            transition: border-color 0.3s;
-        }
-
-        .cert-card:hover {
-            border-color: rgba(129, 140, 248, 0.4);
-        }
-
-        .cert-issuer {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--accent2);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-        }
-
-        .cert-name {
-            font-family: 'Syne', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            line-height: 1.3;
-        }
-
-        .cert-link {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--accent2);
-            text-decoration: none;
-        }
-
-        .cert-link:hover {
-            color: var(--accent);
-        }
-
-        /* References */
-        #references {}
-
-        .ref-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .ref-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.75rem;
-            transition: border-color 0.3s;
-        }
-
-        .ref-card:hover {
-            border-color: rgba(110, 231, 183, 0.3);
-        }
-
-        .ref-name {
-            font-family: 'Syne', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.2rem;
-        }
-
-        .ref-role {
-            font-size: 0.8rem;
-            color: var(--accent);
-            margin-bottom: 0.75rem;
-        }
-
-        .ref-detail {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.72rem;
-            color: var(--muted);
-            line-height: 1.8;
-        }
-
-        /* Footer */
-        footer {
-            padding: 3rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .footer-name {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 1rem;
-            color: var(--accent);
-        }
-
-        .footer-copy {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--muted);
-            letter-spacing: 0.08em;
-        }
-
-        /* Animations */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Tools section inside skills */
-        .tools-section {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .tools-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-        }
-
-        @media (max-width: 768px) {
-            nav {
-                padding: 1rem 1.5rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            section {
-                padding: 5rem 1.5rem;
-            }
-
-            #hero {
-                padding: 7rem 1.5rem 3rem;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .hero-stats {
-                position: relative;
-                right: auto;
-                bottom: auto;
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 2rem;
-                margin-top: 3rem;
-            }
-
-            .stat {
-                text-align: left;
-            }
-
-            footer {
-                padding: 2rem 1.5rem;
-            }
-
-            h1 {
-                font-size: 3rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AcadXAI – Academic Excellence Through AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  /* ── Core Blue Palette ── */
+  --blue-900:#0B1F3A;   /* deepest navy — nav, footer, hero */
+  --blue-800:#102848;   /* dark navy — card dark bg          */
+  --blue-700:#1A3A5C;   /* mid navy — sections, CTA          */
+  --blue-600:#1E4D8C;   /* rich blue — accents, icons        */
+  --blue-500:#2563EB;   /* bright blue — primary action      */
+  --blue-400:#3B82F6;   /* medium blue — hover states        */
+  --blue-300:#93C5FD;   /* light blue — soft accents         */
+  --blue-100:#DBEAFE;   /* very light blue — card bg tint    */
+  --blue-50:#EFF6FF;    /* near-white blue — page bg         */
+
+  /* ── Whites ── */
+  --white:#FFFFFF;
+  --off-white:#F8FAFF;  /* slightly blue-tinted white        */
+
+  /* ── Text ── */
+  --text-dark:#0B1F3A;
+  --text-mid:#1A3A5C;
+  --text-muted:#4A6080;
+  --text-soft:#7A90A8;
+  --text-on-dark:#FFFFFF;
+  --text-on-dark-muted:rgba(255,255,255,0.75);
+  --text-on-dark-dim:rgba(255,255,255,0.42);
+
+  /* ── Borders ── */
+  --border-light:#CBD8EC;
+  --border-blue:rgba(255,255,255,0.1);
+  --border-blue-strong:rgba(255,255,255,0.18);
+  --border-card:#BFCFE8;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text-dark);overflow-x:hidden;}
+
+/* ════════════════════════ NAV ════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;height:64px;
+  background:var(--blue-900);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;letter-spacing:-0.02em;color:var(--white);cursor:pointer;}
+.logo span{color:var(--blue-300);}
+.nav-links{display:flex;align-items:center;list-style:none;height:100%;}
+.nav-links li{position:relative;height:100%;display:flex;align-items:center;}
+.nav-links a,.nav-btn{
+  display:flex;align-items:center;gap:5px;padding:0 16px;height:100%;
+  font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--text-on-dark-muted);text-decoration:none;
+  background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:color 0.2s;white-space:nowrap;
+}
+.nav-links a:hover,.nav-btn:hover,.nav-links li.dd-open>.nav-btn{color:var(--white);}
+.chevron{width:14px;height:14px;transition:transform 0.22s;flex-shrink:0;opacity:0.55;}
+.dd-open .chevron{transform:rotate(180deg);}
+.nav-cta{
+  background:var(--blue-500);color:var(--white);border:none;border-radius:6px;
+  padding:0.55rem 1.4rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;
+  cursor:pointer;transition:all 0.2s;letter-spacing:0.02em;
+}
+.nav-cta:hover{background:var(--blue-400);transform:translateY(-1px);}
+
+/* ════════════════════════ DROPDOWN ════════════════════════ */
+.dropdown{
+  position:absolute;top:calc(100% + 1px);left:0;min-width:330px;
+  background:var(--blue-800);border:1px solid var(--border-blue-strong);
+  border-top:none;border-radius:0 0 10px 10px;padding:0.5rem 0;
+  display:none;z-index:2000;box-shadow:0 16px 40px rgba(0,0,0,0.5);
+}
+.dd-open .dropdown{display:block;}
+.dd-section-label{font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-on-dark-dim);padding:0.55rem 1.2rem 0.3rem;}
+.dd-item{display:flex;align-items:center;gap:12px;padding:0.7rem 1.2rem;cursor:pointer;transition:background 0.15s;text-decoration:none;}
+.dd-item:hover{background:rgba(255,255,255,0.06);}
+.dd-icon{width:38px;height:38px;border-radius:8px;background:rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dd-icon i{font-size:19px;color:var(--blue-300);}
+.dd-icon.dim{background:rgba(255,255,255,0.05);}
+.dd-icon.dim i{color:rgba(255,255,255,0.22);}
+.dd-item-title{font-size:0.88rem;font-weight:600;color:var(--white);line-height:1.2;}
+.dd-item-title.muted{color:rgba(255,255,255,0.3);}
+.dd-item-sub{font-size:0.73rem;color:var(--text-on-dark-muted);margin-top:2px;}
+.dd-badge{font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:rgba(255,255,255,0.09);color:var(--text-on-dark-dim);border-radius:4px;padding:2px 6px;margin-left:6px;vertical-align:middle;}
+.dd-divider{height:1px;background:var(--border-blue);margin:0.4rem 0;}
+
+/* ════════════════════════ PAGE SYSTEM ════════════════════════ */
+.page{display:none;min-height:calc(100vh - 64px);margin-top:64px;}
+.page.active{display:block;}
+
+/* ════════════════════════ HERO ════════════════════════ */
+.hero{
+  background:var(--blue-900);position:relative;
+  min-height:calc(100vh - 64px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:6rem 5%;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 20%,rgba(37,99,235,0.25) 0%,transparent 55%),
+    radial-gradient(ellipse at 80% 80%,rgba(30,77,140,0.4) 0%,transparent 50%);
+  pointer-events:none;
+}
+.grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);
+  background-size:64px 64px;pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(59,130,246,0.15);border:1px solid rgba(147,197,253,0.25);
+  border-radius:100px;padding:0.4rem 1.1rem;
+  font-size:0.72rem;font-weight:700;letter-spacing:0.1em;
+  color:var(--blue-300);text-transform:uppercase;margin-bottom:2rem;
+  animation:fadeUp 0.8s ease both;
+}
+.hero-badge span{width:7px;height:7px;border-radius:50%;background:var(--blue-400);display:inline-block;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,6.5vw,5rem);font-weight:900;line-height:1.06;letter-spacing:-0.03em;color:var(--white);animation:fadeUp 0.8s 0.1s ease both;max-width:860px;}
+.hero-title em{font-style:italic;color:var(--blue-300);}
+.hero-sub{font-size:clamp(1rem,2vw,1.15rem);font-weight:400;color:var(--text-on-dark-muted);max-width:580px;line-height:1.75;margin:1.8rem auto 2.8rem;animation:fadeUp 0.8s 0.2s ease both;}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.8s 0.3s ease both;}
+.btn-primary{background:var(--blue-500);color:var(--white);border:none;border-radius:6px;padding:0.9rem 2.2rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all 0.2s;}
+.btn-primary:hover{background:var(--blue-400);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,0.28);border-radius:6px;padding:0.9rem 2.2rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.95rem;cursor:pointer;transition:all 0.2s;}
+.btn-outline:hover{border-color:var(--blue-300);background:rgba(59,130,246,0.1);}
+.hero-stats{display:flex;gap:4rem;margin-top:5rem;padding-top:3rem;border-top:1px solid rgba(255,255,255,0.1);animation:fadeUp 0.8s 0.4s ease both;}
+.stat-item{text-align:center;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700;color:var(--white);display:block;}
+.stat-label{font-size:0.72rem;color:var(--text-on-dark-dim);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ════════════════════════ SHARED ════════════════════════ */
+section{position:relative;z-index:1;padding:7rem 5%;}
+.tag-dark{display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue-500);margin-bottom:0.75rem;}
+.tag-light{display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue-300);margin-bottom:0.75rem;}
+.title-dark{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:700;line-height:1.15;margin-bottom:1rem;color:var(--text-dark);}
+.title-light{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:700;line-height:1.15;margin-bottom:1rem;color:var(--white);}
+.sub-dark{font-size:1rem;color:var(--text-muted);font-weight:400;max-width:540px;line-height:1.72;}
+.sub-light{font-size:1rem;color:var(--text-on-dark-muted);font-weight:400;max-width:540px;line-height:1.72;}
+.divider-dark{width:48px;height:3px;background:var(--blue-500);border-radius:2px;margin:1rem 0 2.5rem;}
+.divider-light{width:48px;height:3px;background:var(--blue-300);border-radius:2px;margin:1rem 0 2.5rem;}
+.band{height:4px;background:linear-gradient(90deg,var(--blue-900),var(--blue-500),var(--blue-300),var(--blue-500),var(--blue-900));}
+
+/* ════════════════════════ PILLARS (white bg) ════════════════════════ */
+.pillars{background:var(--white);}
+.pillars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:4rem;}
+.pillar-card{background:var(--off-white);border:1px solid var(--border-card);border-radius:12px;padding:2.2rem 2rem;transition:all 0.25s;}
+.pillar-card:hover{background:var(--blue-50);border-color:var(--blue-300);box-shadow:0 6px 24px rgba(37,99,235,0.1);}
+.pillar-icon{width:44px;height:44px;border-radius:8px;background:var(--blue-600);display:flex;align-items:center;justify-content:center;margin-bottom:1.3rem;font-size:1.2rem;}
+.pillar-name{font-family:'Playfair Display',serif;font-size:1.08rem;font-weight:700;margin-bottom:0.55rem;color:var(--text-dark);}
+.pillar-desc{font-size:0.875rem;color:var(--text-muted);line-height:1.65;}
+
+/* ════════════════════════ TOOLS (blue-900 bg) ════════════════════════ */
+.tools-sec{background:var(--blue-900);}
+.tools-header{max-width:580px;margin-bottom:4rem;}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;}
+.tool-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:2rem;transition:all 0.25s;}
+.tool-card:hover{background:rgba(59,130,246,0.1);border-color:rgba(147,197,253,0.3);}
+.tool-tag{display:inline-block;font-size:0.67rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.7rem;border-radius:4px;margin-bottom:1.2rem;}
+.t-res{background:rgba(59,130,246,0.2);color:#93C5FD;}
+.t-wri{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);}
+.t-lea{background:rgba(147,197,253,0.15);color:#BFDBFE;}
+.tool-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:0.6rem;color:var(--white);}
+.tool-desc{font-size:0.875rem;color:var(--text-on-dark-muted);line-height:1.65;}
+.tool-features{margin-top:1.2rem;display:flex;flex-direction:column;gap:0.45rem;}
+.tf{font-size:0.8rem;color:var(--text-on-dark-dim);display:flex;align-items:center;gap:7px;}
+.tf::before{content:'—';color:var(--blue-300);font-weight:700;}
+
+/* ════════════════════════ AUDIENCE (white bg) ════════════════════════ */
+.audience-sec{background:var(--white);}
+.audience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2rem;margin-top:4rem;}
+.audience-card{text-align:center;padding:2.5rem 1.5rem;background:var(--blue-50);border:1px solid var(--border-card);border-radius:12px;transition:all 0.25s;}
+.audience-card:hover{background:var(--blue-100);border-color:var(--blue-300);box-shadow:0 6px 24px rgba(37,99,235,0.1);}
+.aud-avatar{width:68px;height:68px;border-radius:50%;background:var(--blue-600);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 1.3rem;}
+.aud-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.6rem;color:var(--text-dark);}
+.aud-desc{font-size:0.875rem;color:var(--text-muted);line-height:1.65;}
+
+/* ════════════════════════ TESTIMONIALS (blue-50 bg) ════════════════════════ */
+.testi-sec{background:var(--blue-50);}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:4rem;}
+.testi-card{background:var(--white);border:1px solid var(--border-card);border-radius:12px;padding:2rem;transition:all 0.25s;}
+.testi-card:hover{background:var(--blue-50);border-color:var(--blue-300);box-shadow:0 6px 24px rgba(37,99,235,0.08);}
+.qmark{font-family:'Playfair Display',serif;font-size:3.5rem;line-height:1;color:var(--blue-500);opacity:0.3;margin-bottom:0.3rem;}
+.testi-quote{font-size:0.93rem;line-height:1.75;color:var(--text-muted);margin-bottom:1.5rem;}
+.testi-author{display:flex;align-items:center;gap:12px;}
+.testi-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:700;background:var(--blue-600);color:var(--white);}
+.testi-name{font-weight:600;font-size:0.88rem;color:var(--text-dark);}
+.testi-role{font-size:0.74rem;color:var(--text-soft);}
+
+/* ════════════════════════ CTA (blue-700 bg) ════════════════════════ */
+.cta-sec{background:var(--blue-700);text-align:center;padding:7rem 5%;}
+.cta-sec .title-light{max-width:680px;margin:0 auto 1rem;}
+.cta-sec .title-light em{font-style:italic;color:var(--blue-300);}
+.cta-sec .sub-light{margin:0 auto 2.5rem;}
+.cta-form{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;max-width:460px;margin:0 auto;}
+.cta-input{flex:1;min-width:210px;padding:0.85rem 1.2rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+.cta-input::placeholder{color:rgba(255,255,255,0.35);}
+.cta-input:focus{border-color:var(--blue-300);}
+
+/* ════════════════════════ FOOTER ════════════════════════ */
+footer{background:var(--blue-900);border-top:1px solid rgba(255,255,255,0.07);padding:3rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:var(--white);}
+.footer-logo span{color:var(--blue-300);}
+.footer-links{display:flex;gap:2rem;}
+.footer-links a{font-size:0.8rem;color:var(--text-on-dark-dim);text-decoration:none;letter-spacing:0.04em;transition:color 0.2s;}
+.footer-links a:hover{color:var(--white);}
+.footer-copy{font-size:0.74rem;color:var(--text-on-dark-dim);}
+
+/* ════════════════════════ JOURNALXPLORER ════════════════════════ */
+.jx-hero{background:var(--blue-900);padding:5rem 5% 4rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+.jx-hero-inner{max-width:820px;}
+.jx-product-tag{display:inline-block;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:rgba(59,130,246,0.2);color:var(--blue-300);border-radius:4px;padding:0.28rem 0.8rem;margin-bottom:1rem;}
+.jx-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:900;line-height:1.08;letter-spacing:-0.03em;color:var(--white);margin-bottom:0.9rem;}
+.jx-title em{font-style:italic;color:var(--blue-300);}
+.jx-sub{font-size:1rem;color:var(--text-on-dark-muted);line-height:1.75;max-width:560px;margin-bottom:2.2rem;}
+.jx-actions{display:flex;gap:0.75rem;flex-wrap:wrap;}
+.btn-sky{background:var(--blue-500);color:var(--white);border:none;border-radius:6px;padding:0.75rem 1.8rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
+.btn-sky:hover{background:var(--blue-400);transform:translateY(-1px);}
+.btn-ghost-nav{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--white);border:1px solid rgba(255,255,255,0.25);border-radius:6px;padding:0.75rem 1.6rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
+.btn-ghost-nav:hover{border-color:var(--blue-300);background:rgba(59,130,246,0.1);}
+.btn-ghost-nav i{font-size:15px;}
+
+/* JX content — white */
+.jx-content{padding:4rem 5%;background:var(--white);}
+.jx-inner{max-width:900px;}
+.jx-section{margin-bottom:4rem;}
+.jx-section-title{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:var(--text-dark);margin-bottom:0.4rem;display:flex;align-items:center;gap:10px;}
+.jx-section-title i{font-size:21px;color:var(--blue-500);}
+.jx-section-bar{width:40px;height:3px;background:var(--blue-500);border-radius:2px;margin-bottom:1.3rem;}
+.jx-section-body{font-size:0.9rem;color:var(--text-muted);line-height:1.8;}
+
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.3rem;}
+.feat-card{background:var(--blue-50);border:1px solid var(--border-card);border-radius:10px;padding:1.3rem;transition:all 0.2s;}
+.feat-card:hover{background:var(--blue-100);border-color:var(--blue-300);box-shadow:0 4px 16px rgba(37,99,235,0.1);}
+.feat-card i{font-size:22px;color:var(--blue-500);margin-bottom:0.7rem;display:block;}
+.feat-card h4{font-size:0.88rem;font-weight:600;color:var(--text-dark);margin-bottom:0.4rem;}
+.feat-card p{font-size:0.8rem;color:var(--text-muted);line-height:1.6;}
+
+/* ════════════════════════ PRIVACY ════════════════════════ */
+.privacy-wrap{background:var(--blue-900);border:1px solid rgba(147,197,253,0.2);border-radius:14px;padding:2.5rem;}
+.privacy-product-tag{display:inline-flex;align-items:center;gap:6px;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:rgba(59,130,246,0.2);color:var(--blue-300);border-radius:4px;padding:0.28rem 0.8rem;margin-bottom:1rem;}
+.privacy-product-tag i{font-size:13px;}
+.privacy-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--white);margin-bottom:0.4rem;}
+.privacy-bar{width:40px;height:3px;background:var(--blue-400);border-radius:2px;margin-bottom:1.5rem;}
+.privacy-body{font-size:0.9rem;color:var(--text-on-dark-muted);line-height:1.8;}
+.privacy-heading{font-size:0.95rem;font-weight:700;color:var(--white);margin:1.5rem 0 0.5rem;}
+.privacy-list{margin:0.4rem 0 0.8rem 0;display:flex;flex-direction:column;gap:0.5rem;list-style:none;}
+.privacy-list li{font-size:0.88rem;color:var(--text-on-dark-muted);line-height:1.65;display:flex;align-items:flex-start;gap:8px;}
+.privacy-list li i{font-size:15px;color:var(--blue-300);flex-shrink:0;margin-top:3px;}
+.privacy-highlight{color:var(--blue-300);font-weight:600;}
+.privacy-contact-box{margin-top:1.5rem;padding:1.1rem 1.3rem;background:rgba(59,130,246,0.1);border-radius:8px;border:1px solid rgba(147,197,253,0.2);font-size:0.85rem;color:var(--text-on-dark-muted);line-height:1.7;}
+.privacy-contact-box a{color:var(--blue-300);text-decoration:none;}
+.privacy-contact-box a:hover{text-decoration:underline;}
+
+/* ════════════════════════ COMING SOON ════════════════════════ */
+.coming-page{background:var(--white);min-height:calc(100vh - 64px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 5%;}
+.coming-icon{width:80px;height:80px;border-radius:50%;background:var(--blue-50);border:2px solid var(--blue-300);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;}
+.coming-icon i{font-size:36px;color:var(--blue-500);}
+.coming-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--text-dark);margin-bottom:0.6rem;}
+.coming-sub{font-size:1rem;color:var(--text-muted);max-width:420px;line-height:1.75;margin-bottom:2rem;}
+</style>
 </head>
-
 <body>
 
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="showPage('home')">Acad<span>X</span>AI</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+    <li><a href="#" onclick="showPage('tools');return false;">Tools</a></li>
+    <li><a href="#" onclick="showPage('audience');return false;">Who It's For</a></li>
+    <li id="productsLi">
+      <button class="nav-btn" onclick="toggleDropdown(event)">
+        Products
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="dropdown" id="productsDropdown">
+        <div class="dd-section-label">Live Products</div>
+        <a class="dd-item" href="#" onclick="showPage('journalxplorer');return false;">
+          <div class="dd-icon"><i class="ti ti-book-2"></i></div>
+          <div><div class="dd-item-title">JournalXplorer</div><div class="dd-item-sub">Discover & explore academic journals</div></div>
+        </a>
+        <div class="dd-divider"></div>
+        <div class="dd-section-label">Other Products</div>
+        <a class="dd-item" href="#" onclick="showPage('coming');return false;">
+          <div class="dd-icon dim"><i class="ti ti-chart-dots"></i></div>
+          <div><div class="dd-item-title muted">Other Products <span class="dd-badge">Soon</span></div><div class="dd-item-sub">Under development</div></div>
+        </a>
+      </div>
+    </li>
+    <li><a href="#" onclick="showPage('about');return false;">About</a></li>
+  </ul>
+  <button class="nav-cta">Early Access</button>
+</nav>
 
-    <nav id="navbar">
-        <a href="#hero" class="nav-logo">D·A·K</a>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#publication">Research</a></li>
-            <li><a href="#achievements">Awards</a></li>
-            <li><a href="#references">References</a></li>
-        </ul>
-    </nav>
 
-    <!-- HERO -->
-    <section id="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-grid"></div>
-        <div class="hero-content">
-            <div class="hero-tag">M.Tech · Computer Science & Engineering</div>
-            <h1>Danish<br>Asad<br><span>Khan</span></h1>
-            <p class="hero-sub">
-                Researcher & engineer at the intersection of <strong style="color:var(--text)">AI, IoT, and Deep
-                    Learning</strong>.
-                Published at IEEE. Winner at IIT Bombay EUREKA. NET & GATE qualified.
-            </p>
-            <div class="hero-actions">
-                <a href="#projects" class="btn btn-primary">View Projects ↓</a>
-                <a href="mailto:danishasadkhan@zhcet.ac.in" class="btn btn-ghost">Get in Touch</a>
-            </div>
-        </div>
-        <div class="hero-stats">
-            <div class="stat">
-                <div class="stat-num">8.33</div>
-                <div class="stat-label">M.Tech CGPA</div>
-            </div>
-            <div class="stat">
-                <div class="stat-num">7+</div>
-                <div class="stat-label">Research Projects</div>
-            </div>
-            <div class="stat">
-                <div class="stat-num">1×</div>
-                <div class="stat-label">IEEE Publication</div>
-            </div>
-        </div>
-    </section>
+<!-- PAGE: HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="grid-bg"></div>
+    <div class="hero-badge"><span></span> AI-Powered Academic Platform</div>
+    <h1 class="hero-title">Advance <em>Academic<br/>Excellence</em> Through AI</h1>
+    <p class="hero-sub">AcadXAI empowers researchers, students, and the global academic community with intelligent tools that accelerate discovery, enhance writing, and deepen learning.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">Get Early Access</button>
+      <button class="btn-outline" onclick="showPage('tools')">Explore Tools →</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">10K+</span><span class="stat-label">Researchers</span></div>
+      <div class="stat-item"><span class="stat-num">50+</span><span class="stat-label">Institutions</span></div>
+      <div class="stat-item"><span class="stat-num">98%</span><span class="stat-label">Satisfaction</span></div>
+    </div>
+  </section>
+  <div class="band"></div>
 
-    <!-- ABOUT -->
-    <section id="about">
-        <div class="section-header">
-            <span class="section-num">01</span>
-            <div class="section-line"></div>
-            <h2>About</h2>
-        </div>
-        <div class="about-grid">
-            <div class="about-text reveal">
-                <p>
-                    M.Tech graduate in <strong>Computer Science & Engineering</strong> from Zakir Husain College of
-                    Engineering & Technology, Aligarh Muslim University — with a passion for carrying out constructive
-                    and innovative research contributing to sustainable development.
-                </p>
-                <p>
-                    My work spans <strong>IoT systems, Machine Learning, Deep Learning</strong>, and full-stack
-                    development. I've built everything from biometric voting machines to obstacle-avoidance robots and
-                    published peer-reviewed research at IEEE conferences.
-                </p>
-                <p>
-                    <strong>Volunteer</strong> at Disability Unit, AMU. Fluent in Hindi, English, and Urdu. Enjoy
-                    cricket, movies, and music outside the lab.
-                </p>
-                <div class="contact-list">
-                    <div class="contact-item">
-                        <span class="label">Phone</span>
-                        <span>+91 7037094794 / +91 8077275882</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="label">Email</span>
-                        <a href="mailto:danishasadkhan@zhcet.ac.in">danishasadkhan@zhcet.ac.in</a>
-                    </div>
-                    <div class="contact-item">
-                        <span class="label">Alt Email</span>
-                        <a href="mailto:dasadkhan05@gmail.com">dasadkhan05@gmail.com</a>
-                    </div>
-                    <div class="contact-item">
-                        <span class="label">Location</span>
-                        <span>Aligarh, U.P., India — 202002</span>
-                    </div>
-                </div>
-            </div>
-            <div class="reveal" style="transition-delay: 0.15s">
-                <div class="tools-label" style="margin-bottom:1rem">Technical Skills</div>
-                <div class="skills-cloud">
-                    <span class="skill-tag highlight">Python</span>
-                    <span class="skill-tag highlight">Deep Learning</span>
-                    <span class="skill-tag highlight">Machine Learning</span>
-                    <span class="skill-tag highlight">IoT</span>
-                    <span class="skill-tag highlight">React</span>
-                    <span class="skill-tag">C / C++</span>
-                    <span class="skill-tag">Node.js</span>
-                    <span class="skill-tag">PHP</span>
-                    <span class="skill-tag">JavaScript</span>
-                    <span class="skill-tag">HTML / CSS</span>
-                    <span class="skill-tag">MySQL</span>
-                    <span class="skill-tag">jQuery / Ajax</span>
-                    <span class="skill-tag">Bootstrap</span>
-                    <span class="skill-tag">JSON / NoSQL</span>
-                </div>
-                <div class="tools-section">
-                    <div class="tools-label">Tools & Platforms</div>
-                    <div class="skills-cloud">
-                        <span class="skill-tag">Raspberry Pi</span>
-                        <span class="skill-tag">Arduino</span>
-                        <span class="skill-tag">NodeMCU / ESP8266</span>
-                        <span class="skill-tag">BOLT IoT</span>
-                        <span class="skill-tag">Android Studio</span>
-                        <span class="skill-tag">Linux (Ubuntu)</span>
-                        <span class="skill-tag">Anaconda</span>
-                        <span class="skill-tag">ThingSpeak</span>
-                        <span class="skill-tag">Proteus</span>
-                        <span class="skill-tag">Ionic</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- Testimonials -->
+  <section class="testi-sec">
+    <div class="tag-dark">From the Community</div>
+    <h2 class="title-dark">Trusted by Academics<br/>Around the World</h2>
+    <div class="divider-dark"></div>
+    <div class="testi-grid">
+      <div class="testi-card"><div class="qmark">"</div><p class="testi-quote">LitMap AI transformed how I approach literature reviews. What used to take three weeks now takes three days — and the quality of synthesis is actually better.</p><div class="testi-author"><div class="testi-av">PR</div><div><div class="testi-name">Prof. Priya Raghunathan</div><div class="testi-role">Computational Biology, IIT Bombay</div></div></div></div>
+      <div class="testi-card"><div class="qmark">"</div><p class="testi-quote">ScribeX understands academic register in a way no other AI tool does. My students' dissertations are more coherent, and their ideas shine through clearly.</p><div class="testi-author"><div class="testi-av">DK</div><div><div class="testi-name">Dr. David Kowalski</div><div class="testi-role">Associate Professor, Oxford</div></div></div></div>
+      <div class="testi-card"><div class="qmark">"</div><p class="testi-quote">As a PhD student without a large lab budget, AcadXAI gave me access to research tools I simply couldn't afford elsewhere. It's genuinely democratising scholarship.</p><div class="testi-author"><div class="testi-av">AO</div><div><div class="testi-name">Amara Osei-Mensah</div><div class="testi-role">PhD Candidate, University of Ghana</div></div></div></div>
+    </div>
+  </section>
 
-    <!-- EDUCATION -->
-    <section id="education">
-        <div class="section-header">
-            <span class="section-num">02</span>
-            <div class="section-line"></div>
-            <h2>Education</h2>
-        </div>
-        <div class="edu-timeline">
-            <div class="edu-item reveal">
-                <div class="edu-year">2018 – 2020</div>
-                <div class="edu-degree">M.Tech — Computer Science & Engineering</div>
-                <div class="edu-school">Zakir Husain College of Engineering & Technology, Aligarh Muslim University
-                </div>
-                <span class="edu-grade">1st Division · 8.33 / 10</span>
-            </div>
-            <div class="edu-item reveal" style="transition-delay:0.1s">
-                <div class="edu-year">2014 – 2018</div>
-                <div class="edu-degree">B.Tech — Computer Engineering</div>
-                <div class="edu-school">Zakir Husain College of Engineering & Technology, Aligarh Muslim University
-                </div>
-                <span class="edu-grade">1st Division · 6.88 / 10</span>
-            </div>
-            <div class="edu-item reveal" style="transition-delay:0.2s">
-                <div class="edu-year">2013</div>
-                <div class="edu-degree">Intermediate (Class XII)</div>
-                <div class="edu-school">Senior Secondary School, Aligarh Muslim University</div>
-                <span class="edu-grade">1st Division · 70.25%</span>
-            </div>
-            <div class="edu-item reveal" style="transition-delay:0.3s">
-                <div class="edu-year">2010</div>
-                <div class="edu-degree">High School (Class X) — CBSE</div>
-                <div class="edu-school">Central Board of Secondary Education</div>
-                <span class="edu-grade">1st Division · 9.0 / 10</span>
-            </div>
-        </div>
-    </section>
+  <section class="cta-sec">
+    <div class="tag-light">Join the Waitlist</div>
+    <h2 class="title-light">Be First to Experience<br/><em>the Future of Academia</em></h2>
+    <p class="sub-light" style="margin:0 auto 2.5rem;">Join thousands of academics already on the waitlist. Early access includes all tools, free for six months.</p>
+    <div class="cta-form">
+      <input class="cta-input" type="email" placeholder="your@university.edu"/>
+      <button class="btn-primary">Join Waitlist</button>
+    </div>
+  </section>
 
-    <!-- PROJECTS -->
-    <section id="projects">
-        <div class="section-header">
-            <span class="section-num">03</span>
-            <div class="section-line"></div>
-            <h2>Projects</h2>
-        </div>
-        <div class="projects-grid">
-            <div class="project-card reveal">
-                <span class="project-badge">Dissertation</span>
-                <div class="project-year">2019 · M.Tech</div>
-                <div class="project-title">Automatic Helmet Detection & Number Plate Recognition Using Deep Learning
-                </div>
-                <p class="project-desc">Real-time detection system for road safety enforcement — identifies helmetless
-                    bikers and reads license plates using deep learning models.</p>
-            </div>
-            <div class="project-card reveal" style="transition-delay:0.1s">
-                <span class="project-badge">Final Year</span>
-                <div class="project-year">2017–18 · B.Tech</div>
-                <div class="project-title">Biometric Based Electronic Voting Machine</div>
-                <p class="project-desc">Secure e-voting system with fingerprint biometric authentication to eliminate
-                    impersonation and ensure tamper-proof elections. Led to IEEE publication.</p>
-            </div>
-            <div class="project-card reveal" style="transition-delay:0.15s">
-                <div class="project-year">2019</div>
-                <div class="project-title">Smart Assistive Stick for Visually Impaired Persons</div>
-                <p class="project-desc">IoT-enabled assistive device using ultrasonic sensors and Raspberry Pi to help
-                    visually impaired navigate safely.</p>
-            </div>
-            <div class="project-card reveal" style="transition-delay:0.2s">
-                <div class="project-year">2019</div>
-                <div class="project-title">AI-Enabled Obstacle Avoidance Robot</div>
-                <p class="project-desc">Autonomous robot that detects and avoids obstacles in real time using ML
-                    algorithms and sensor fusion.</p>
-            </div>
-            <div class="project-card reveal" style="transition-delay:0.25s">
-                <div class="project-year">2019</div>
-                <div class="project-title">Smart Waste Collection & Management System</div>
-                <p class="project-desc">IoT-connected waste bins with fill-level monitoring and automated collection
-                    scheduling for smart cities.</p>
-            </div>
-            <div class="project-card reveal" style="transition-delay:0.3s">
-                <div class="project-year">2018</div>
-                <div class="project-title">Android App — Live Emotion Recognition</div>
-                <p class="project-desc">Mobile application that detects facial emotions in real time using deep learning
-                    and Android camera APIs.</p>
-            </div>
-            <div class="project-card reveal" style="transition-delay:0.35s">
-                <div class="project-year">2018</div>
-                <div class="project-title">Challenge-Based User Authentication Web App</div>
-                <p class="project-desc">Web application implementing cognitive challenge-response authentication to
-                    boost security beyond passwords.</p>
-            </div>
-            <div class="project-card reveal" style="transition-delay:0.4s">
-                <div class="project-year">2016</div>
-                <div class="project-title">Data Structures & Algorithms Android Tutorial App</div>
-                <p class="project-desc">Published Android app on Google Play Store for learning DSA concepts
-                    interactively.</p>
-            </div>
-        </div>
-    </section>
+  <footer>
+    <div class="footer-logo">Acad<span>X</span>AI</div>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('about');return false;">About</a>
+      <a href="#" onclick="showPage('tools');return false;">Tools</a>
+      <a href="#">Pricing</a><a href="#">Blog</a><a href="#">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 AcadXAI · www.acadxai.com</div>
+  </footer>
+</div>
 
-    <!-- PUBLICATION -->
-    <section id="publication">
-        <div class="section-header">
-            <span class="section-num">04</span>
-            <div class="section-line"></div>
-            <h2>Research Publication</h2>
-        </div>
-        <div class="pub-card reveal">
-            <div class="pub-icon">📄</div>
-            <div>
-                <div class="pub-conf">IEEE · INDIACom-2022 · Conference ID: 54597</div>
-                <div class="pub-title">Secure Electronic Voting Machine Using Biometric Authentication</div>
-                <div class="pub-meta">9th International Conference on Computing for Sustainable Global Development ·
-                    23–25 March 2022 · BVICAM, New Delhi, India</div>
-                <a href="https://ieeexplore.ieee.org/document/9763202" target="_blank" class="pub-link">
-                    View on IEEE Xplore →
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <!-- INTERNSHIPS -->
-    <section id="internships">
-        <div class="section-header">
-            <span class="section-num">05</span>
-            <div class="section-line"></div>
-            <h2>Internships & Training</h2>
+<!-- PAGE: TOOLS -->
+<div id="page-tools" class="page">
+  <section class="tools-sec" style="padding-top:5rem;">
+    <div class="tools-header">
+      <div class="tag-light">Platform Tools</div>
+      <h2 class="title-light">Every Tool You Need to Excel</h2>
+      <div class="divider-light"></div>
+      <p class="sub-light">From literature discovery to final manuscript, AcadXAI supports every stage of the academic journey.</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-card"><span class="tool-tag t-res">Research</span><div class="tool-name">LitMap AI</div><p class="tool-desc">Navigate millions of papers with semantic search. Discover connections across disciplines and surface the most relevant literature in seconds.</p><div class="tool-features"><div class="tf">Semantic similarity mapping</div><div class="tf">Citation network visualisation</div><div class="tf">Auto-generated literature summaries</div></div></div>
+      <div class="tool-card"><span class="tool-tag t-wri">Writing</span><div class="tool-name">ScribeX</div><p class="tool-desc">An academic co-writer that understands your field. Improve clarity, structure arguments, and get context-aware suggestions — in your voice.</p><div class="tool-features"><div class="tf">Discipline-specific language models</div><div class="tf">Journal style formatting</div><div class="tf">Plagiarism & AI detection safe</div></div></div>
+      <div class="tool-card"><span class="tool-tag t-res">Research</span><div class="tool-name">DataSense</div><p class="tool-desc">Transform raw data into publishable insights. Statistical analysis, visualisation, and interpretation — accessible to every researcher.</p><div class="tool-features"><div class="tf">Natural language data querying</div><div class="tf">Auto-generated methodology sections</div><div class="tf">Publication-ready charts</div></div></div>
+      <div class="tool-card"><span class="tool-tag t-lea">Learning</span><div class="tool-name">ConceptCore</div><p class="tool-desc">Adaptive learning that meets you where you are. Build deep conceptual understanding of any academic topic with personalised study paths.</p><div class="tool-features"><div class="tf">Socratic AI tutoring</div><div class="tf">Spaced repetition engine</div><div class="tf">Knowledge gap diagnostics</div></div></div>
+      <div class="tool-card"><span class="tool-tag t-wri">Writing</span><div class="tool-name">CiteRight</div><p class="tool-desc">Intelligent reference management that auto-formats citations, detects inconsistencies, and keeps your bibliography impeccably organised.</p><div class="tool-features"><div class="tf">2000+ citation styles</div><div class="tf">DOI & metadata auto-fetch</div><div class="tf">Collaboration-ready libraries</div></div></div>
+      <div class="tool-card"><span class="tool-tag t-res">Research</span><div class="tool-name">ReviewBoard</div><p class="tool-desc">Streamline peer review and manuscript assessment. AI-assisted checklists, structured feedback templates, and reviewer analytics.</p><div class="tool-features"><div class="tf">Structured review frameworks</div><div class="tf">Bias detection assistance</div><div class="tf">Collaborative annotation</div></div></div>
+    </div>
+  </section>
+  <footer style="background:var(--blue-900);border-top:1px solid rgba(255,255,255,0.07);padding:2rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+    <div class="footer-logo">Acad<span>X</span>AI</div>
+    <div class="footer-copy" style="color:var(--text-on-dark-dim);font-size:0.74rem;">© 2026 AcadXAI · www.acadxai.com</div>
+  </footer>
+</div>
+
+
+<!-- PAGE: AUDIENCE -->
+<div id="page-audience" class="page">
+  <section class="audience-sec" style="padding-top:5rem;min-height:calc(100vh - 64px);">
+    <div class="tag-dark">Who It's For</div>
+    <h2 class="title-dark">Designed for the<br/>Academic Community</h2>
+    <div class="divider-dark"></div>
+    <div class="audience-grid">
+      <div class="audience-card"><div class="aud-avatar">🎓</div><div class="aud-name">Students</div><p class="aud-desc">From undergraduates to doctoral candidates — accelerate learning, sharpen your writing, and build research skills that last a lifetime.</p></div>
+      <div class="audience-card"><div class="aud-avatar">🔭</div><div class="aud-name">Researchers</div><p class="aud-desc">Spend less time on administrative overhead and more time on discovery. AcadXAI handles the groundwork so your curiosity can roam freely.</p></div>
+      <div class="audience-card"><div class="aud-avatar">🏛️</div><div class="aud-name">Institutions</div><p class="aud-desc">Equip your faculty and students with a cutting-edge platform. Institutional dashboards, usage analytics, and SSO integration included.</p></div>
+    </div>
+  </section>
+</div>
+
+
+<!-- PAGE: ABOUT -->
+<div id="page-about" class="page">
+  <section class="pillars" style="padding-top:5rem;min-height:calc(100vh - 64px);">
+    <div class="tag-dark">Our Philosophy</div>
+    <h2 class="title-dark">Built on Six Pillars<br/>of Academic Integrity</h2>
+    <div class="divider-dark"></div>
+    <div class="pillars-grid">
+      <div class="pillar-card"><div class="pillar-icon">🔬</div><div class="pillar-name">Research Integrity</div><p class="pillar-desc">AI that augments scholarly rigor, never compromises it. Every output is traceable and verifiable.</p></div>
+      <div class="pillar-card"><div class="pillar-icon">✦</div><div class="pillar-name">Original Thought</div><p class="pillar-desc">Our tools spark ideas and surface insights — your intellectual contribution remains entirely your own.</p></div>
+      <div class="pillar-card"><div class="pillar-icon">🌐</div><div class="pillar-name">Global Accessibility</div><p class="pillar-desc">World-class academic tools accessible to every researcher, regardless of institutional affiliation.</p></div>
+      <div class="pillar-card"><div class="pillar-icon">🔒</div><div class="pillar-name">Data Privacy</div><p class="pillar-desc">Your research, manuscripts, and data remain strictly private. Zero training on user content.</p></div>
+      <div class="pillar-card"><div class="pillar-icon">📖</div><div class="pillar-name">Open Knowledge</div><p class="pillar-desc">Committed to open science principles and interoperability with leading academic repositories.</p></div>
+      <div class="pillar-card"><div class="pillar-icon">⚡</div><div class="pillar-name">Continuous Innovation</div><p class="pillar-desc">Built in close collaboration with the academic community, evolving with the frontier of knowledge.</p></div>
+    </div>
+  </section>
+</div>
+
+
+<!-- PAGE: JOURNALXPLORER -->
+<div id="page-journalxplorer" class="page">
+  <div class="jx-hero">
+    <div class="jx-hero-inner">
+      <div class="jx-product-tag">Live Product</div>
+      <h1 class="jx-title">Journal<em>Xplorer</em></h1>
+      <p class="jx-sub">Discover, filter, and deeply explore thousands of peer-reviewed academic journals — powered by intelligent semantic search and AI-assisted ranking.</p>
+      <div class="jx-actions">
+        <button class="btn-sky">Launch JournalXplorer</button>
+        <button class="btn-ghost-nav" onclick="scrollToPrivacy()"><i class="ti ti-lock"></i> Privacy Policy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="jx-content">
+    <div class="jx-inner">
+
+      <div class="jx-section">
+        <div class="jx-section-title"><i class="ti ti-info-circle"></i> About JournalXplorer</div>
+        <div class="jx-section-bar"></div>
+        <p class="jx-section-body">JournalXplorer is AcadXAI's flagship research discovery product. It indexes over 120,000 peer-reviewed journals across disciplines and uses large language models to help researchers find the most relevant venues for their work — whether they're submitting a manuscript, conducting a systematic review, or simply exploring a new field. The platform provides impact metrics, open-access filters, editorial timelines, and AI-generated journal summaries, all in one place.</p>
+      </div>
+
+      <div class="jx-section">
+        <div class="jx-section-title"><i class="ti ti-layout-grid"></i> Key Features</div>
+        <div class="jx-section-bar"></div>
+        <div class="features-grid">
+          <div class="feat-card"><i class="ti ti-search"></i><h4>Semantic Journal Search</h4><p>Describe your research in plain language and surface the most relevant journals instantly.</p></div>
+          <div class="feat-card"><i class="ti ti-chart-bar"></i><h4>Impact & Metrics</h4><p>Access CiteScores, Impact Factors, h-index data, and acceptance rate estimates.</p></div>
+          <div class="feat-card"><i class="ti ti-lock-open"></i><h4>Open Access Filter</h4><p>Filter by Gold, Green, or Diamond OA status to fit your funding requirements.</p></div>
+          <div class="feat-card"><i class="ti ti-clock"></i><h4>Review Timelines</h4><p>See crowdsourced and AI-estimated peer review durations before you submit.</p></div>
+          <div class="feat-card"><i class="ti ti-bookmark"></i><h4>Smart Watchlists</h4><p>Save journals to personalised lists and get notified of new calls for papers.</p></div>
+          <div class="feat-card"><i class="ti ti-file-export"></i><h4>Export & Cite</h4><p>Export journal metadata in BibTeX, RIS, or CSV for seamless reference management.</p></div>
         </div>
-        <div class="intern-list">
-            <div class="intern-card reveal">
-                <div>
-                    <div class="intern-org">NITK-STEP · National Institute of Technology Karnataka</div>
-                    <div class="intern-topic">IoT with Machine Learning using Python — Industrial Internship Program
-                    </div>
-                </div>
-                <div class="intern-date">Jul 12 –<br>Aug 6, 2021</div>
+      </div>
+
+      <div class="jx-section" id="privacy-section">
+        <div class="jx-section-title"><i class="ti ti-shield-check"></i> Privacy</div>
+        <div class="jx-section-bar"></div>
+        <div class="privacy-wrap">
+          <div class="privacy-product-tag"><i class="ti ti-lock"></i> Privacy Policy</div>
+          <div class="privacy-title">JournalXplorer Privacy Policy</div>
+          <div class="privacy-bar"></div>
+          <div class="privacy-body">
+            <p>JournalXplorer respects your privacy.</p>
+            <ul class="privacy-list" style="margin-top:1.2rem;">
+              <li><i class="ti ti-shield-check"></i><span class="privacy-highlight">The app does not collect, store, transmit, or share any personal data.</span></li>
+              <li><i class="ti ti-shield-check"></i>No login or registration is required.</li>
+              <li><i class="ti ti-shield-check"></i>The app works completely offline and does not require an internet connection to access journal information.</li>
+              <li><i class="ti ti-shield-check"></i>We do not use cookies, tracking tools, advertising networks, or third-party analytics services.</li>
+              <li><i class="ti ti-shield-check"></i>Any journals saved as favourites and app preferences are stored locally on your device only and are never shared with us or any third party.</li>
+              <li><i class="ti ti-shield-check"></i>JournalXplorer does not access your contacts, photos, files, location, camera, microphone, or any other personal information on your device.</li>
+            </ul>
+            <p class="privacy-heading">Data Sources & Disclaimer</p>
+            <p>The journal information provided in the app is sourced from publicly available datasets and is intended for informational and academic purposes only. While efforts are made to keep the information accurate and up to date, users should verify journal details from official sources before making publication or research decisions.</p>
+            <p class="privacy-heading">Affiliation Disclaimer</p>
+            <p>This app is not affiliated with, endorsed by, or officially associated with the Australian Business Deans Council (ABDC) or any journal ranking authority.</p>
+            <p class="privacy-heading">Future Updates</p>
+            <p>Any future updates that involve data collection or usage will be clearly communicated through an updated Privacy Policy.</p>
+            <div class="privacy-contact-box">
+              <strong style="color:var(--white);">Contact</strong><br/>
+              For any questions regarding this Privacy Policy, please contact:<br/><br/>
+              <strong style="color:var(--white);">AcadXAI</strong><br/>
+              Email: <a href="mailto:acadxai@gmail.com">acadxai@gmail.com</a>
             </div>
-            <div class="intern-card reveal" style="transition-delay:0.1s">
-                <div>
-                    <div class="intern-org">IIT Kanpur × iSMRITI</div>
-                    <div class="intern-topic">Summer Internship — Introduction to AI & IoT</div>
-                </div>
-                <div class="intern-date">Jun 3 –<br>Jul 12, 2019</div>
-            </div>
-            <div class="intern-card reveal" style="transition-delay:0.2s">
-                <div>
-                    <div class="intern-org">Internshala</div>
-                    <div class="intern-topic">Online Training — Internet of Things (4 weeks)</div>
-                </div>
-                <div class="intern-date">Jul 1 –<br>Jul 28, 2017</div>
-            </div>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- ACHIEVEMENTS -->
-    <section id="achievements">
-        <div class="section-header">
-            <span class="section-num">06</span>
-            <div class="section-line"></div>
-            <h2>Awards & Achievements</h2>
-        </div>
-        <div class="achieve-grid">
-            <div class="achieve-item reveal">
-                <div class="achieve-icon">🏆</div>
-                <div class="achieve-text"><strong>Winners — EUREKA 2021</strong><br>IIT Bombay, one of India's most
-                    prestigious student innovation events.</div>
-            </div>
-            <div class="achieve-item reveal" style="transition-delay:0.05s">
-                <div class="achieve-icon">🥇</div>
-                <div class="achieve-text"><strong>Winners — National Level VJ Hackathon</strong><br>National
-                    championship hackathon recognition.</div>
-            </div>
-            <div class="achieve-item reveal" style="transition-delay:0.1s">
-                <div class="achieve-icon">🏅</div>
-                <div class="achieve-text"><strong>1st Prize — DE-COV IDEATHON</strong><br>Tensors × Indian Medical
-                    Association Kerala (431 total teams).</div>
-            </div>
-            <div class="achieve-item reveal" style="transition-delay:0.15s">
-                <div class="achieve-icon">✅</div>
-                <div class="achieve-text"><strong>GATE Qualified</strong><br>National-level engineering entrance cleared
-                    successfully.</div>
-            </div>
-            <div class="achieve-item reveal" style="transition-delay:0.2s">
-                <div class="achieve-icon">✅</div>
-                <div class="achieve-text"><strong>NET Qualified</strong><br>National Eligibility Test — eligible for
-                    lectureship & JRF.</div>
-            </div>
-            <div class="achieve-item reveal" style="transition-delay:0.25s">
-                <div class="achieve-icon">🎖️</div>
-                <div class="achieve-text"><strong>3rd Best Project Award</strong><br>Summer Internship Program at IIT
-                    Kanpur.</div>
-            </div>
-            <div class="achieve-item reveal" style="transition-delay:0.3s">
-                <div class="achieve-icon">🎓</div>
-                <div class="achieve-text"><strong>MET / IDB Scholarship</strong><br>Awarded on merit, personality test,
-                    and interview.</div>
-            </div>
-            <div class="achieve-item reveal" style="transition-delay:0.35s">
-                <div class="achieve-icon">🥇</div>
-                <div class="achieve-text"><strong>1st Rank in Class — High School</strong><br>Top performer in CBSE
-                    batch.</div>
-            </div>
-        </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- CERTIFICATIONS -->
-    <section id="certifications">
-        <div class="section-header">
-            <span class="section-num">07</span>
-            <div class="section-line"></div>
-            <h2>Certifications</h2>
-        </div>
-        <div class="cert-grid">
-            <div class="cert-card reveal">
-                <div class="cert-issuer">Coursera</div>
-                <div class="cert-name">Front-End Development with React</div>
-                <a href="https://coursera.org/share/e6d9f4885d2ae5816d81467d9e213cd9" target="_blank"
-                    class="cert-link">View Certificate →</a>
-            </div>
-            <div class="cert-card reveal" style="transition-delay:0.1s">
-                <div class="cert-issuer">Coursera</div>
-                <div class="cert-name">Front-End Web UI Frameworks & Tools: Bootstrap 4</div>
-                <a href="https://coursera.org/share/9f70850bf8da1789d48cb69f66fbe907" target="_blank"
-                    class="cert-link">View Certificate →</a>
-            </div>
-            <div class="cert-card reveal" style="transition-delay:0.2s">
-                <div class="cert-issuer">Coursera</div>
-                <div class="cert-name">Introduction to Machine Learning</div>
-                <a href="https://coursera.org/share/8abf931335185d1be6e24cd0d0080567" target="_blank"
-                    class="cert-link">View Certificate →</a>
-            </div>
-        </div>
-    </section>
+  <footer style="background:var(--blue-900);border-top:1px solid rgba(255,255,255,0.07);padding:2rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+    <div class="footer-logo">Acad<span>X</span>AI</div>
+    <div style="display:flex;gap:1.5rem;">
+      <a href="#" onclick="showPage('home');return false;" style="font-size:0.8rem;color:var(--text-on-dark-dim);text-decoration:none;">Home</a>
+      <a href="#" onclick="scrollToPrivacy();return false;" style="font-size:0.8rem;color:var(--blue-300);text-decoration:none;">Privacy Policy</a>
+    </div>
+    <div class="footer-copy" style="color:var(--text-on-dark-dim);font-size:0.74rem;">© 2026 AcadXAI · www.acadxai.com</div>
+  </footer>
+</div>
 
-    <!-- REFERENCES -->
-    <section id="references">
-        <div class="section-header">
-            <span class="section-num">08</span>
-            <div class="section-line"></div>
-            <h2>References</h2>
-        </div>
-        <div class="ref-grid">
-            <div class="ref-card reveal">
-                <div class="ref-name">Prof. Mohammad Sarosh Umar</div>
-                <div class="ref-role">Professor · Computer Engineering, Z.H.C.E.T, AMU</div>
-                <div class="ref-detail">
-                    📞 +91 9457558766<br>
-                    ✉️ saroshumar@zhcet.ac.in
-                </div>
-            </div>
-            <div class="ref-card reveal" style="transition-delay:0.1s">
-                <div class="ref-name">Mr. Mohammed Abdul Qadeer</div>
-                <div class="ref-role">Associate Professor · Computer Engineering, Z.H.C.E.T, AMU</div>
-                <div class="ref-detail">
-                    📞 +91 9897705269<br>
-                    ✉️ maqadeer@amu.ac.in
-                </div>
-            </div>
-            <div class="ref-card reveal" style="transition-delay:0.2s">
-                <div class="ref-name">Mr. Zafaryab Haider</div>
-                <div class="ref-role">Assistant Professor · IIRU, Z.H.C.E.T, AMU</div>
-                <div class="ref-detail">
-                    📞 +91 8439694585<br>
-                    ✉️ zafaryab@zhcet.ac.in
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <footer>
-        <div class="footer-name">Danish Asad Khan</div>
-        <div class="footer-copy">M.TECH · AMU ALIGARH · INDIA</div>
-    </footer>
+<!-- PAGE: COMING SOON -->
+<div id="page-coming" class="page">
+  <div class="coming-page">
+    <div class="coming-icon"><i class="ti ti-rocket"></i></div>
+    <div class="coming-title">Coming Soon</div>
+    <p class="coming-sub">This product is currently in development. Join the waitlist to be among the first to access it on launch day.</p>
+    <button class="btn-sky">Join the Waitlist</button>
+    <p style="margin-top:1.2rem;font-size:0.8rem;color:var(--text-soft);">
+      <a href="#" onclick="showPage('journalxplorer');return false;" style="color:var(--blue-500);text-decoration:none;">← Back to JournalXplorer</a>
+    </p>
+  </div>
+</div>
 
-    <script>
-        // Custom cursor
-        const cursor = document.getElementById('cursor');
-        const ring = document.getElementById('cursorRing');
-        let mx = 0, my = 0, rx = 0, ry = 0;
 
-        document.addEventListener('mousemove', e => {
-            mx = e.clientX; my = e.clientY;
-            cursor.style.left = mx + 'px';
-            cursor.style.top = my + 'px';
-        });
-
-        function animateRing() {
-            rx += (mx - rx) * 0.12;
-            ry += (my - ry) * 0.12;
-            ring.style.left = rx + 'px';
-            ring.style.top = ry + 'px';
-            requestAnimationFrame(animateRing);
-        }
-        animateRing();
-
-        // Nav scroll
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 60);
-        });
-
-        // Reveal on scroll
-        const reveals = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('visible');
-                    observer.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        reveals.forEach(el => observer.observe(el));
-    </script>
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+    var el = document.getElementById('page-' + id);
+    if (el) { el.classList.add('active'); window.scrollTo(0, 0); }
+    closeDropdown();
+  }
+  function toggleDropdown(e) {
+    e.stopPropagation();
+    document.getElementById('productsLi').classList.toggle('dd-open');
+  }
+  function closeDropdown() {
+    document.getElementById('productsLi').classList.remove('dd-open');
+  }
+  document.addEventListener('click', function(e) {
+    if (!document.getElementById('productsLi').contains(e.target)) closeDropdown();
+  });
+  function scrollToPrivacy() {
+    showPage('journalxplorer');
+    setTimeout(function() {
+      var el = document.getElementById('privacy-section');
+      if (el) {
+        var top = el.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
+    }, 80);
+  }
+  function handleDeepLink() {
+    if (window.location.hash === '#journalxplorer-privacy') {
+      document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+      var jx = document.getElementById('page-journalxplorer');
+      if (jx) { jx.classList.add('active'); jx.style.display = 'block'; }
+      setTimeout(function() {
+        var el = document.getElementById('privacy-section');
+        if (el) { var top = el.getBoundingClientRect().top + window.pageYOffset - 80; window.scrollTo({ top: top, behavior: 'smooth' }); }
+      }, 400);
+    }
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', handleDeepLink); }
+  else { handleDeepLink(); }
+  window.addEventListener('hashchange', handleDeepLink);
+</script>
 </body>
-
 </html>
