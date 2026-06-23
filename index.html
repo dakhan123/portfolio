@@ -17,7 +17,8 @@
       --ink: #112b67;
       --ink-soft: #13243a;
 
-      --rule: #CBD5E1;
+      --rule: #eef2f7;
+
 
       --navy: #1E3A5F;
       --navy-dark: #102A43;
@@ -86,7 +87,7 @@
     .topbar {
       background: var(--ink);
       color: var(--paper);
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .68rem;
       letter-spacing: .08em;
       text-transform: uppercase;
@@ -127,7 +128,7 @@
 
     .nav-links a {
       text-decoration: none;
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .72rem;
       letter-spacing: .06em;
       text-transform: uppercase;
@@ -148,7 +149,7 @@
 
     .nav-mobile summary {
       cursor: pointer;
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .75rem;
       letter-spacing: .06em;
       text-transform: uppercase;
@@ -175,7 +176,7 @@
 
     .nav-mobile .menu-panel a {
       text-decoration: none;
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .78rem;
       letter-spacing: .04em;
       text-transform: uppercase;
@@ -213,7 +214,7 @@
 
     .btn {
       display: inline-block;
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .78rem;
       letter-spacing: .04em;
       text-transform: uppercase;
@@ -290,7 +291,7 @@
 
     .stamp {
       display: inline-block;
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .72rem;
       letter-spacing: .1em;
       color: var(--paper);
@@ -327,7 +328,7 @@
 
     .margin-note {
       font-family: var(--font-script);
-      color: var(--paper);
+      color: #FFFF00;
       font-size: 1.25rem;
       line-height: 1.3;
       transform: rotate(-2deg);
@@ -349,13 +350,25 @@
     .tag {
       background: var(--rule);
       display: inline-block;
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .72rem;
       letter-spacing: .02em;
-      border: 1px solid var(--rule);
+      border: 1px solid var(--accent);
       padding: 7px 13px;
       border-radius: 2px;
       color: var(--ink-soft)
+    }
+
+    .tag1 {
+      background: var(--accent-soft);
+      display: inline-block;
+      font-family: var(--font-serif);
+      font-size: .72rem;
+      letter-spacing: .02em;
+      border: 1px solid var(--accent);
+      padding: 7px 13px;
+      border-radius: 2px;
+      color: var(--rule)
     }
 
     /* ---------- hero quick tags ---------- */
@@ -386,7 +399,7 @@
     }
 
     .service-entry {
-      border: 1px solid var(--rule);
+      border: 1px solid var(--accent);
       border-radius: var(--radius);
       background: var(--paper);
       overflow: hidden;
@@ -419,7 +432,7 @@
     }
 
     .svc-index {
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       color: var(--accent);
       font-weight: 600;
       font-size: .8rem
@@ -444,7 +457,7 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       color: var(--accent);
       font-size: 1.3rem
     }
@@ -476,7 +489,7 @@
 
     .svc-label {
       display: block;
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .66rem;
       letter-spacing: .08em;
       text-transform: uppercase;
@@ -561,7 +574,7 @@
     }
 
     .fig-label {
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .7rem;
       letter-spacing: .08em;
       text-transform: uppercase;
@@ -569,7 +582,7 @@
     }
 
     .status-badge {
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .66rem;
       letter-spacing: .04em;
       text-transform: uppercase;
@@ -703,12 +716,12 @@
     }
 
     .industry-tile {
-      border: 1px solid var(--rule);
+      border: 1px solid var(--accent);
       border-radius: var(--radius);
       background: var(--paper);
       padding: 22px 18px;
       text-align: center;
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .8rem;
       letter-spacing: .03em;
       color: var(--ink-soft);
@@ -760,7 +773,7 @@
 
     details summary::after {
       content: '+';
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       color: var(--accent);
       font-size: 1.3rem;
       margin-left: 16px
@@ -784,7 +797,7 @@
     }
 
     .cta .kicker {
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .72rem;
       letter-spacing: .12em;
       text-transform: uppercase;
@@ -851,7 +864,7 @@
     }
 
     .footer-bottom {
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: .72rem;
       letter-spacing: .04em;
       color: var(--ink-soft);
@@ -916,7 +929,7 @@
           <a class="btn btn-outline" href="#contact">Request a Free Consultation</a>
         </div>
       </div>
-      <div class="margin-note reveal">↳ "strong motivation — proceed to review" ✓</div>
+      <!-- <div class="margin-note reveal">↳ "strong motivation — proceed to review" ✓</div> -->
     </div>
   </section>
 
@@ -930,7 +943,7 @@
       <div class="service-list">
 
         <details class="service-entry reveal">
-          <summary><span class="svc-index">01</span><span class="svc-title">LaTeX Thesis &amp; Research
+          <summary><span class="svc-index">01</span> <span class="svc-title">LaTeX Thesis &amp; Research
               Support</span><span class="svc-teaser">Professional LaTeX services for PhD theses, M.Tech dissertations,
               research papers, journal manuscripts, conference papers, and Beamer presentations.</span><span
               class="svc-toggle"></span></summary>
@@ -1207,8 +1220,6 @@
         <div class="industry-tile">Higher Education</div>
         <div class="industry-tile">Research Institutions</div>
         <div class="industry-tile">Startups</div>
-        <div class="industry-tile">Government
-          Organizations</div>
         <div class="industry-tile">Manufacturing</div>
         <div class="industry-tile">Agriculture</div>
         <div class="industry-tile">Healthcare</div>
